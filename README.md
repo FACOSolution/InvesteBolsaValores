@@ -8,4 +8,4 @@ Requisitos:
 	- Quandl
 	- BeautifulSoup 4
 
-	Para rodar o programa execute o arquivo principal.py
+	Para rodar o programa execute estruturado/main.py
