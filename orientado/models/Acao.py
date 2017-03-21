@@ -19,9 +19,12 @@ class Acao(object):
             precos = resp[1]
             if resp[0] == True:
                 data_utils.escrever_csv(self.codigo, precos)
+                precos = data_utils.ler_arquivo_csv(self.codigo)
         return precos
 
     def calcular_retorno_diario(self):
+        if len(self.precos_historicos)<=1:
+            return 0
         retorno_diario = np.zeros(len(self.precos_historicos)-1)
         for i in range(len(self.precos_historicos)-1):
             retorno_diario[i] = (self.precos_historicos[i+1] - self.precos_historicos[i])/self.precos_historicos[i]

@@ -1,6 +1,8 @@
 import csv
 from datetime import date
 from os.path import join
+from os import mkdir
+import os.path
 
 hoje = date.today()
 hoje = '{:%d-%m-%Y}'.format(hoje)
@@ -23,9 +25,10 @@ def ler_arquivo_csv(nome, pos=0):
     return precos
 
 def escrever_csv(nome_arquivo, dados, index=False, header=False):
+    if not os.path.exists(caminho):
+        print('\nCriando pasta ' + caminho + ' ...')
+        mkdir(caminho)
     dados.to_csv(join(caminho, nome_arquivo + '.csv'), index=index, header=header)
-
-
 
 def ler_arquivo_txt(nome_arquivo):
     acoes = []
@@ -39,6 +42,9 @@ def ler_arquivo_txt(nome_arquivo):
     return acoes
 
 def escrever_lista_em_txt(nome_arquivo, codigos):
+    if not os.path.exists(caminho):
+        print('\nCriando pasta ' + caminho + ' ...')
+        mkdir(caminho)
     arq = open(join(caminho, nome_arquivo + '.txt'), 'w')
     novo = []
     for codigo in codigos:
