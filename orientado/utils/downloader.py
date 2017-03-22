@@ -31,6 +31,6 @@ def baixar_pontuacoes_mercado(codigo):
 
 def baixar_taxa_selic():
     taxa = []
-    taxa = quandl.get(dataset, start_date=data_inicial,
+    taxa = quandl.get('BCB/11', start_date=data_inicial,
      end_date=data_final, limit=1, column_index=1)
     return taxa
