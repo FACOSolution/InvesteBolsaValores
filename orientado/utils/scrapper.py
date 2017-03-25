@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-def baixar_composicao_carteira_ibovespa():
+def get_composicao_carteira_ibovespa():
     html = 'http://bvmf.bmfbovespa.com.br/indices' \
             + '/ResumoCarteiraTeorica.aspx?Indice=IBOV&idioma=pt-br'
     resposta_html = requests.get(html)
