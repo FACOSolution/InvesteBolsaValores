@@ -1,4 +1,5 @@
 from datetime import date
+import pandas
 import quandl
 
 quandl.ApiConfig.api_key = 'xX62DrpcmpMS3k3moVeh'
@@ -11,26 +12,27 @@ data_final = '{:%Y-%m-%d}'.format(data_final)
 
 caminho = '{:%d-%m-%Y}'.format(hoje)
 
+def acessar_quandl(dataset='', start_date=data_inicial, end_date=data_final, column_index=0):
+
+    try:
+        dados = quandl.get(dataset, start_date=data_inicial,
+        end_date=data_final, column_index=column_index)
+    except quandl.errors.quandl_error.QuandlError:
+        dados = pandas.DataFrame()
+
+    return dados
+
 def baixar_precos_acao(codigo_acao):
     dataset = 'GOOG/BVMF_' + codigo_acao
-    precos = []
-    try:
-        precos = quandl.get(dataset, start_date=data_inicial,
-        end_date=data_final, column_index=4)
-    except quandl.errors.quandl_error.QuandlError:
-        return [False, precos]
-
-    return [True, precos]
+    precos = acessar_quandl(dataset, column_index = 4)
+    return precos
 
 def baixar_pontuacoes_mercado(codigo):
     dataset = 'YAHOO/' + codigo
-    pontuacoes = []
-    pontuacoes = quandl.get(dataset, start_date=data_inicial,
-     end_date=data_final, column_index=4)
+    pontuacoes = acessar_quandl(dataset, column_index = 4)
     return pontuacoes
 
 def baixar_taxa_selic():
-    taxa = []
-    taxa = quandl.get('BCB/11', start_date=data_inicial,
-     end_date=data_final, limit=1, column_index=1)
+    dataset = 'BCB/4390'
+    taxa = acessar_quandl(dataset, column_index = 1)
     return taxa
