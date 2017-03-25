@@ -15,3 +15,5 @@ for acao in portfolio.acoes:
 
 print('\nRetorno Esperado da Carteira em % : ', portfolio.calcular_retorno_esperado()*100)
 print('Beta da Carteira : ', portfolio.calcular_beta_carteira())
+
+portfolio.mostrar_grafico()
