@@ -1,11 +1,21 @@
+from .Acao import Acao
+from .Mercado import Mercado
 from utils import scrapper
 from utils import data_utils
 from utils import downloader
-from .Acao import Acao
-from .Mercado import Mercado
 import operator
+import plotly
+import plotly.graph_objs as go
+
 
 class Carteira(object):
+    """A simple representation of a portfolio.
+
+    :param mercado: A Mercado object, ...
+    :param retorno_livre_risco: A float, ...
+    :param tamanho: A int, ...
+    :param acoes: A list of Acao objects, ...
+    """
 
     def __init__(self, tamanho=10, mercado='IBOVESPA', metodo='RELAÇÃO'):
         self.mercado = Mercado(mercado)
@@ -52,10 +62,58 @@ class Carteira(object):
         return beta
 
     def calcular_retorno_livre_risco(self):
-        #taxas_selic = data_utils.ler_arquivo_csv('SELIC')[1]
-        #if not taxas_selic:
-        taxas_selic = downloader.baixar_taxa_selic()
-        data_utils.escrever_csv('SELIC', taxas_selic)
-        taxas_selic = data_utils.ler_arquivo_csv('SELIC')
-        retorno_livre_risco = taxas_selic[0]/100
+        arq = data_utils.get_arquivo('TAXA', 'SELIC', '.csv')
+        taxa_percentual = data_utils.ler_arquivo_csv(arq)
+        retorno_livre_risco = taxa_percentual[0]/100
         return retorno_livre_risco
+
+    def mostrar_grafico(self):
+
+        # Inicializa as variáveis que serão utilizadas na plotagem.
+        retorno_esperado_acoes = []
+        beta_acoes = []
+        retorno_diario_mercado = self.mercado.retorno_diario
+        codigo_acoes = []
+
+        # Obtém os dados necessários.
+        for acao in self.mercado.acoes_mercado:
+            retorno_esperado_acoes.append(acao.retorno_esperado)
+            beta = acao.calcular_beta(retorno_diario_mercado)
+            beta_acoes.append(beta)
+            codigo_acoes.append(acao.codigo)
+
+        # Parte do gŕafico referente aos dados.
+        data = [
+            # Define a reta. Linha de Mercado de Títulos com (0, Rf) e (1, Rm).
+            go.Scatter(
+                x = [0, 1],
+                y = [self.retorno_livre_risco, self.mercado.retorno_esperado],
+                mode = 'lines',
+                name = 'LMT'
+            ),
+            # Define os pontos. Ações com seus respectivos beta, Re, código.
+            go.Scatter(
+                x = beta_acoes,
+                y = retorno_esperado_acoes,
+                mode = 'markers',
+                name = 'Ações',
+                text = codigo_acoes
+            )
+
+        ]
+        # Parte do gŕafico referente ao layout. (Titulo, Eixos, Grade)
+        layout = go.Layout(
+            title = 'Security Market Line',
+            xaxis = dict(
+                title = 'Beta'
+            ),
+            yaxis = dict(
+                title = 'Retorno Esperado'
+            )
+        )
+
+        # Monta a figura com as partes criadas, data e layout.
+        fig = go.Figure(data=data, layout=layout)
+
+        # Plota o gráfico num arquivo HTML e salva na pasta.
+        plotly.offline.plot(fig, filename='teste.html')
