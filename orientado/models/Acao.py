@@ -1,26 +1,28 @@
-import numpy as np
 from utils import data_utils
 from utils import downloader
+import numpy as np
 
 class Acao(object):
+    """A simple representation of a stock.
+
+    :param codigo: A string, the stock's code from Quandl API.
+    :param precos_historicos: A list of floats, the stock's historical prices
+        from the past two years.
+    :param retorno_diario: A list of floats, ...
+    :param retorno_esperado: A float, ...
+    :param relacao: A float, ...
+    """
 
     def __init__(self, codigo):
         self.codigo = codigo
         self.precos_historicos = self.get_precos()
         self.retorno_diario = self.calcular_retorno_diario()
         self.retorno_esperado = self.get_retorno_esperado()
-        self.relacao = None
+        self.relacao = 0
 
     def get_precos(self, data_inicial=0, data_final=0):
-        precos = data_utils.ler_arquivo_csv(self.codigo)
-        print(len(precos))
-        if not precos:
-            print('Baixando ' + self.codigo)
-            resp = downloader.baixar_precos_acao(self.codigo)
-            precos = resp[1]
-            if resp[0] == True:
-                data_utils.escrever_csv(self.codigo, precos)
-                precos = data_utils.ler_arquivo_csv(self.codigo)
+        arq = data_utils.get_arquivo('PREÇOS', self.codigo, '.csv')
+        precos = data_utils.ler_arquivo_csv(arq)
         return precos
 
     def calcular_retorno_diario(self):
@@ -34,8 +36,7 @@ class Acao(object):
 
     def get_retorno_esperado(self):
         retorno_esperado_diario = np.mean(self.retorno_diario)
-        return retorno_esperado_diario
-        #return (1 + retorno_esperado_diario)**30
+        return ((1 + retorno_esperado_diario)**30) - 1
 
     def calcular_risco(self):
         return np.std(self.retorno_diario)
