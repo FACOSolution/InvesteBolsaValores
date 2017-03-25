@@ -1,11 +1,22 @@
 from utils import data_utils
 from utils import downloader
 from utils import scrapper
-import numpy as np
 from .Acao import Acao
+import numpy as np
 
 
 class Mercado(object):
+    """A simple representation of a market portfolio.
+
+    :param nome: A string, ...
+    :param codigo: A string, ...
+    :param codigo_acoes: A list of strings, ...
+    :param pontuacoes: A list of floats, ...
+    :param retorno_diario: A list of floats, ...
+    :param retorno_esperado: A float, ...
+    :param acoes_mercado: A list of Acao objects, xxx.
+    """
+
 
     def __init__(self, nome):
         self.nome = nome
@@ -17,25 +28,13 @@ class Mercado(object):
         self.acoes_mercado = self.montar_mercado()
 
     def get_pontuacoes(self):
-        pontuacoes = data_utils.ler_arquivo_csv(self.codigo)
-        if not pontuacoes:
-            print('Baixando ' + self.codigo)
-            pontuacoes = downloader.baixar_pontuacoes_mercado(self.codigo)
-            data_utils.escrever_csv(self.codigo, pontuacoes)
-            pontuacoes = data_utils.ler_arquivo_csv(self.codigo)
+        arq = data_utils.get_arquivo('PONTUAÇÕES', self.codigo, '.csv')
+        pontuacoes = data_utils.ler_arquivo_csv(arq)
         return pontuacoes
 
-    '''
-    Retornando uma lista com os nomes das acoes
-    '''
     def get_composicao(self):
-        if self.nome == 'IBOVESPA':
-            composicao = data_utils.ler_arquivo_txt('COMPOSIÇÃO IBOVESPA')
-            if not composicao:
-                print('Baixando Composição Ibovespa')
-                composicao = scrapper.baixar_composicao_carteira_ibovespa()
-                data_utils.escrever_lista_em_txt('COMPOSIÇÃO IBOVESPA', composicao)
-                composicao = data_utils.ler_arquivo_txt('COMPOSIÇÃO IBOVESPA')
+        arq = data_utils.get_arquivo('COMPOSIÇÃO', 'COMPOSIÇÃO IBOVESPA', '.txt')
+        composicao = data_utils.ler_arquivo_txt(arq)
         return composicao
 
     def calcular_retorno_diario(self):
@@ -46,10 +45,10 @@ class Mercado(object):
 
     def get_retorno_esperado(self):
         retorno_esperado_diario = np.mean(self.retorno_diario)
-        return (1 + retorno_esperado_diario)**30
+        #return retorno_esperado_diario
+        return ((1 + retorno_esperado_diario)**30) - 1
 
     def montar_mercado(self):
-        # Retirar o '\n' de cada código.print('Entrou')
         acoes = []
         for codigo in self.codigo_acoes:
             acao = Acao(codigo)
