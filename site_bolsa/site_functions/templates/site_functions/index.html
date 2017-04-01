@@ -1,0 +1,22 @@
+{% extends 'site_functions/base.html' %}
+
+{% block content %}
+
+<h1>NOME DA APLICAÇÃO</h1>
+
+<h5>Descrição da Aplicação</h5>
+
+<form action="grafico/">
+ Taxa de Juros:<br>
+ <input type="text" value="SELIC"><br>
+ Tamanho da Carteira:<br>
+ <input type="text" value="10"><br><br>
+ Carteira de Mercado:<br>
+ <input type="text" value="IBOVESPA"><br><br>
+ Método a ser aplicado:<br>
+ <input type="text" value="RELAÇÃO"><br><br>
+
+ <input type="submit" value="Gerar Gráfico">
+</form>
+
+{% endblock %}
