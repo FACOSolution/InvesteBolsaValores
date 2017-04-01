@@ -8,5 +8,6 @@ Requisitos:
 	- Quandl
 	- BeautifulSoup 4
 	- Plotly
+	- Django
 
-	Para rodar o programa execute estruturado/main.py
+	Para rodar o programa execute orientado/main.py
