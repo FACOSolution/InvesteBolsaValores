@@ -1,5 +1,5 @@
-from utils import data_utils
-from utils import downloader
+from site_functions.utils import data_utils
+from site_functions.utils import downloader
 import numpy as np
 
 class Acao(object):

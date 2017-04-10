@@ -1,6 +1,6 @@
-from utils import data_utils
-from utils import downloader
-from utils import scrapper
+from site_functions.utils import data_utils
+from site_functions.utils import downloader
+from site_functions.utils import scrapper
 from .Acao import Acao
 import numpy as np
 

@@ -1,8 +1,8 @@
 from .Acao import Acao
 from .Mercado import Mercado
-from utils import scrapper
-from utils import data_utils
-from utils import downloader
+from site_functions.utils import data_utils
+from site_functions.utils import downloader
+from site_functions.utils import scrapper
 import operator
 import plotly
 import plotly.graph_objs as go
