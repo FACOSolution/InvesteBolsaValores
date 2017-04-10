@@ -3,9 +3,10 @@
 {% block content %}
 
 
-<h5>Retorno Esperado da Carteira = ????</h5>
-<h5>Beta da Carteira = ????</h5>
+<h5>Retorno Esperado da Carteira = {{carteira.calcular_retorno_esperado}}</h5>
+<h5>Beta da Carteira = {{carteira.calcular_beta_carteira}}</h5>
 
 <div> Gráfico aqui</div>
+{{carteira.mostrar_grafico}}
 
 {% endblock %}
