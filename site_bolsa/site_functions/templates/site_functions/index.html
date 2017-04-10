@@ -5,16 +5,18 @@
 <h1>NOME DA APLICAÇÃO</h1>
 
 <h5>Descrição da Aplicação</h5>
-
-<form action="grafico/">
- Taxa de Juros:<br>
- <input type="text" value="SELIC"><br>
- Tamanho da Carteira:<br>
- <input type="text" value="10"><br><br>
- Carteira de Mercado:<br>
- <input type="text" value="IBOVESPA"><br><br>
- Método a ser aplicado:<br>
- <input type="text" value="RELAÇÃO"><br><br>
+{{teste}}
+<form action="{% url 'mostrar_grafico' %}" method="post">
+  {% csrf_token %}
+{{form.as_p}}
+  <label><b>Taxa de Juros</b></label>
+ <input type="text" value="SELIC" name="juros"><br>
+ <label><b>Tamanho da Carteira</b></label>
+ <input type="text" value="10" name="tamanho"><br><br>
+ <label><b>Carteira de Mercado</b></label>
+ <input type="text" value="IBOVESPA" name="mercado"><br><br>
+ <label><b>Método a ser aplicado</b></label>
+ <input type="text" value="RELAÇÃO" name="metodo"><br><br>
 
  <input type="submit" value="Gerar Gráfico">
 </form>
