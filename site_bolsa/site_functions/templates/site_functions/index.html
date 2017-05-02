@@ -2,23 +2,44 @@
 
 {% block content %}
 
-<h1>NOME DA APLICAÇÃO</h1>
+<div class="uk-margin uk-margin-left uk-child-width-1-2" uk-grid>
+	<div class="uk-card uk-card-default uk-card-body">
+		<h3 class="uk-card-title">{{teste}}</h3>
+		<form class="uk-form-horizontal uk-margin-large" action="{% url 'mostrar_grafico' %}" method="post">
+			{% csrf_token %}
+			{{form.as_p}}
 
-<h5>Descrição da Aplicação</h5>
-{{teste}}
-<form action="{% url 'mostrar_grafico' %}" method="post">
-  {% csrf_token %}
-{{form.as_p}}
-  <label><b>Taxa de Juros</b></label>
- <input type="text" value="SELIC" name="juros"><br>
- <label><b>Tamanho da Carteira</b></label>
- <input type="text" value="10" name="tamanho"><br><br>
- <label><b>Carteira de Mercado</b></label>
- <input type="text" value="IBOVESPA" name="mercado"><br><br>
- <label><b>Método a ser aplicado</b></label>
- <input type="text" value="RELAÇÃO" name="metodo"><br><br>
+			<div class="uk-margin">
+        		<label class="uk-form-label" for="form-horizontal-text"><b>Taxa de Juros</b></label>
+        		<div class="uk-form-controls">
+					<input class="uk-input" id="form-horizontal-text" type="text" value="SELIC" name="juros"><br>
+				</div>
+			</div>
 
- <input type="submit" value="Gerar Gráfico">
-</form>
+			<div class="uk-margin">
+        		<label class="uk-form-label" for="form-horizontal-text"><b>Tamanho da Carteira</b></label>
+        		<div class="uk-form-controls">
+					<input class="uk-input" id="form-horizontal-text" type="text" value="10" name="tamanho"><br>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+        		<label class="uk-form-label" for="form-horizontal-text"><b>Carteira de Mercado</b></label>
+        		<div class="uk-form-controls">
+					<input class="uk-input" id="form-horizontal-text" type="text" value="IBOVESPA" name="mercado"><br>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+        		<label class="uk-form-label" for="form-horizontal-text"><b>Método a ser aplicado</b></label>
+        		<div class="uk-form-controls">
+					<input class="uk-input" id="form-horizontal-text" type="text" value="RELAÇÃO" name="metodo"><br>
+				</div>
+			</div>
+
+			<input class="uk-button uk-button-default uk-align-center" type="submit" value="Gerar Gráfico">
+		</form>
+	</div>
+</div>
 
 {% endblock %}
